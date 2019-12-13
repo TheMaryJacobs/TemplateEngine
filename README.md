@@ -20,5 +20,6 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/asy
 How to append HTML together in node
 https://stackoverflow.com/questions/3459476/how-to-append-to-a-file-in-node
 
+Background by - SVGbackgrounds.com
 
-
+TwistedPixel - found a repo to help me figure out app.js 
