@@ -67,7 +67,7 @@ const questions = [
     },
     {
         type: "input",
-        message: "What is the employee's id?",
+        message: "What is the employee's id number?",
         name: "id"
     },
     {
@@ -344,11 +344,11 @@ let classdir =
     '<h1 class="teamname"> Team Summary </h1>' +
     '</header>' +
     '<container>' +
-    '<div class="row">' +
-    '<div class="col">'
+    '<div class="row">' 
 );
 
 fs.appendFileSync('./output/teampage.html',
+    '<div class="col">' +
     '<div id="manager">' +
     '<div class="card">' +
     '<div class="card-header managerstyle">' + managerArr[0].name + '</div>' +
@@ -371,19 +371,20 @@ fs.appendFileSync('./output/teampage.html',
 //loop through and make a card for each intern in the InternArray
 for (i = 0; i < engineerArr.length; i++) {
     fs.appendFileSync('./output/teampage.html',
+        '<div class="col">' +
         '<div id="engineer">' +
         '<div class="card">' +
-        '<div class="card-header engingeerstyle">' + engineerArr[i].name + '</div>' +
+        '<div class="card-header engineerstyle">' + engineerArr[i].name + '</div>' +
         '<div class="card-body">' +
         '<div class=content>' +
 
         '<p>' + "<span> ID: </span>" + engineerArr[i].id + '</p> <hr>' +
         '<p>' + "<span> Email: </span>" + engineerArr[i].email + '</p> <hr>' +
-        '<p>' + "<span> Office Number: </span>" + engineerArr[i].gitname + '</p>' +
+        '<p>' + "<span> GitHub </span>" + engineerArr[i].gitname + '</p>' +
 
         '</div>' +
         '</div>' +
-        '<div class="card-footer engingeerstyle"> Engineer </div>' +
+        '<div class="card-footer engineerstyle"> Engineer </div>' +
         '</div>' +
         '</div>' +
         '</div>'
@@ -393,6 +394,7 @@ for (i = 0; i < engineerArr.length; i++) {
 //loop through and make a card for each intern in the InternArray
 for (i = 0; i < internArr.length; i++) {
     fs.appendFileSync('./output/teampage.html',
+        '<div class="col">' +    
         '<div id="intern">' +
         '<div class="card">' +
         '<div class="card-header internstyle">' + internArr[i].name + '</div>' +
@@ -401,7 +403,7 @@ for (i = 0; i < internArr.length; i++) {
 
         '<p>' + "<span> ID: </span>" + internArr[i].id + '</p><hr>' +
         '<p>' + "<span> Email: </span>" + internArr[i].email + '</p><hr>' +
-        '<p>' + "<span> Office Number: </span>" + internArr[i].school + '</p>' + 
+        '<p>' + "<span> College: </span>" + internArr[i].school + '</p>' + 
 
         '</div>' +
         '</div>' +
