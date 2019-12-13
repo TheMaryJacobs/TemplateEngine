@@ -183,11 +183,11 @@ let start =
             .prompt(startQuestion)
             .then(async function (answers) {
                 //
-                if (answers.startQuestion === 'Add an employee to the team?') {
+                if (answers.startQuestion === 'Add an employee to the team') {
                     employeeInfo.length = 0;
                     input()
                 }
-                if (answers.startQuestion === 'Create the team HTML page?') {
+                if (answers.startQuestion === 'Create the team HTML page (Add 1 team member first)') {
                     createteam()
                 }
             })
@@ -222,7 +222,7 @@ let classdir =
         }
     };
 
-start ()
+
 
     // build a manager card at start
     async function buildManager() {
@@ -319,11 +319,111 @@ start ()
 
 
     // CREATE THE TEAM IN AN ARRAY
+    // ASYNC becuase we have to run through each job title 
+    //array and create HTML based on what employee types are on the team
+
+    createteam =
+    async function teamHTML() {
+
     // PRINT THE ARRAY ON CARDS IN TEAM.HTML FILE!
 
+    //this is annoying why can't it be on separate lines
+    fs.writeFileSync('./output/teampage.html',
+    '<DOCTYPE! HTML>' +
+    '<html>' +
+    '<head>' +
+    '<meta charset="UTF-8">' +
+    '<link rel="stylesheet" type="text/css" href="style.css">' +
+    '<link href="https://fonts.googleapis.com/css?family=Bebas+Neue|Roboto|Roboto+Slab&display=swap" rel="stylesheet">' +
+    '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1.0"/> ' +
+    '<meta http-equiv="X-UA-Compatible" content="ie=edge" />' +
+    '</head>' +
+    '<body>' +
+    '<header>' +
+    '<h1 class="teamname"> Team Summary </h1>' +
+    '</header>' +
+    '<container>' +
+    '<div class="row">' +
+    '<div class="col">'
+);
+
+fs.appendFileSync('./output/teampage.html',
+    '<div id="manager">' +
+    '<div class="card">' +
+    '<div class="card-header managerstyle">' + managerArr[0].name + '</div>' +
+        '<div class="card-body">' +
+            '<div class=content>' +
+
+            '<p>' + "<span> ID: </span>" + managerArr[0].id + '</p> <hr>' +
+            '<p>' + "<span> Email: </span>" + managerArr[0].email + '</p> <hr>' +
+            '<p>' + "<span> Office Number: </span>" + managerArr[0].officeNumber + '</p>' +
+
+            '</div>' +
+        '</div>' +
+    '<div class="card-footer managerstyle">' + "Manager" + '</div>' +
+    '</div>' +
+    '</div>' +
+    '</div>'
+);
+
+
+//loop through and make a card for each intern in the InternArray
+for (i = 0; i < engineerArr.length; i++) {
+    fs.appendFileSync('./output/teampage.html',
+        '<div id="engineer">' +
+        '<div class="card">' +
+        '<div class="card-header engingeerstyle">' + engineerArr[i].name + '</div>' +
+        '<div class="card-body">' +
+        '<div class=content>' +
+
+        '<p>' + "<span> ID: </span>" + engineerArr[i].id + '</p> <hr>' +
+        '<p>' + "<span> Email: </span>" + engineerArr[i].email + '</p> <hr>' +
+        '<p>' + "<span> Office Number: </span>" + engineerArr[i].gitname + '</p>' +
+
+        '</div>' +
+        '</div>' +
+        '<div class="card-footer engingeerstyle"> Engineer </div>' +
+        '</div>' +
+        '</div>' +
+        '</div>'
+    );
+}
+
+//loop through and make a card for each intern in the InternArray
+for (i = 0; i < internArr.length; i++) {
+    fs.appendFileSync('./output/teampage.html',
+        '<div id="intern">' +
+        '<div class="card">' +
+        '<div class="card-header internstyle">' + internArr[i].name + '</div>' +
+        '<div class="card-body">' +
+        '<div class=content>' +
+
+        '<p>' + "<span> ID: </span>" + internArr[i].id + '</p><hr>' +
+        '<p>' + "<span> Email: </span>" + internArr[i].email + '</p><hr>' +
+        '<p>' + "<span> Office Number: </span>" + internArr[i].school + '</p>' + 
+
+        '</div>' +
+        '</div>' +
+        '<div class="card-footer internstyle"> Intern </div>' +
+        '</div>' +
+        '</div>' +
+        '</div>'
+    );
+}
+
+fs.appendFileSync('./output/teampage.html', 
+    '</div>' +
+    '</div>' +
+    '</container>' +
+    '</body>' +
+    '</html>'
+);
+
+//tell the user where their new file can be found
+console.log('Your Team Summary html file is in the output folder')
+}
 
 
 
-
-
-
+start ()
