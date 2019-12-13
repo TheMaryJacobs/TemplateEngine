@@ -9,11 +9,9 @@ const Inquirer = require("inquirer");
 const Jest = require('jest');
 const path = require('path');
 const fs = require('fs');
-//Initial arrays
-let managerArr = [];
-let engineerArr = [];
-let internArr = [];
-let employeeInfo = [];
+
+
+
 //Document values
 
 
@@ -33,7 +31,7 @@ const startQuestion = [
     }
 ]
 
-//manager setup
+//manager setupg
 const adminQuestions = [
     {
         type: "input",
@@ -115,3 +113,116 @@ const internQuestion = [
 
 ];
 console.log (startQuestion, adminQuestions, managerQuestion, engineerQuestion, internQuestion, internQuestion);
+
+
+
+//Initial arrays - these fill with user info and are used to create HTML cards
+let managerArr = [];
+let engineerArr = [];
+let internArr = [];
+let employeeInfo = [];
+
+// these functions are asynchronous because they jump around depending on user choice
+//start the thing function
+let start =
+    async function adminStart() {
+
+        await Inquirer
+            .prompt(adminQuestions)
+
+            .then(async function (userData) {
+                let managerInfo = {
+                    'name': userData.name,
+                    'id': JSON.parse(userData.id),
+                    'email': userData.email,
+                    'role': 'employee', //default setting
+                    'title': 'manager',
+                    'officeNumber': '',
+                    'gitname': '',
+                    'github': '',
+                    'school': ''
+
+                }
+                //start with manager questions, push that to managerArray
+                if (position = true) {
+                    employeeInfo.push(managerInfo)
+                    newemp()
+                }
+            })
+    }
+
+    //accept user input and plop it in a a new userInfo object
+    let input =
+    async function init() {
+        await Inquirer
+            .prompt(questions)
+
+            .then(async function (userData) {
+                let userInfo = {
+                    'name': userData.name,
+                    'id': JSON.parse(userData.id),
+                    'email': userData.email,
+                    'role': 'employee', //default setting
+                    'title': userData.title,
+                    'officeNumber': '',
+                    'gitname': '',
+                    'github': '',
+                    'school': ''
+                }
+                employeeInfo.push(userInfo)
+                newemp()
+            })
+    };
+
+
+    //move to the next step - add another user, or create the PDF
+    let next =
+    async function adminNext() {
+        await Inquirer
+            .prompt(adminChoices)
+            .then(async function (answers) {
+                //
+                if (answers.adminchoice === 'Add an employee to the team?') {
+                    employeeInfo.length = 0;
+                    input()
+                }
+                if (answers.adminchoice === 'Create the team HTML page?') {
+                    createteam()
+                }
+            })
+    };
+
+    //construct a new employee object based on user input
+    let newemp =
+    async function employeeprofile() {
+        const name = employeeInfo[0].name;
+        const id = employeeInfo[0].id;
+        const email = employeeInfo[0].email;
+        const role = employeeInfo[0].role;
+
+        const employee = new Employee(name, id, email, role)
+        classdir()
+    };
+
+//handle if manager, no promiste rejection
+
+
+start ()
+
+    // build a manager card at start
+    //next
+    // build an engineer card when filled out
+    //next
+    // build an intern card when filled out
+    //next
+
+
+    // CREATE THE TEAM IN AN ARRAY
+    // PRINT THE ARRAY ON CARDS IN TEAM.HTML FILE!
+
+
+
+
+
+
+
