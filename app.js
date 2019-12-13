@@ -12,9 +12,6 @@ const fs = require('fs');
 
 
 
-//Document values
-
-
 //Document questions - call these later to ask user below
 //Inquirer Documentation helped
 
@@ -23,7 +20,7 @@ const startQuestion = [
     {
         type: "list",
         message: "Select an option to begin.",
-        name: "adminchoice",
+        name: "startQuestion",
         choices: [
             'Add an employee to the team',
             'Create the team HTML page (Add 1 team member first)'
@@ -35,12 +32,12 @@ const startQuestion = [
 const adminQuestions = [
     {
         type: "input",
-        message: "Manager name?",
+        message: "Hello Manager! What is your name?",
         name: "name"
     },
     {
         type: "input",
-        message: "What is your employee id?",
+        message: "What is your employee id number?",
         name: "id"
     },
     {
@@ -48,6 +45,8 @@ const adminQuestions = [
         message: "What is your email?",
         name: "email"
     },
+
+    //BOOLEAN 
     {
         type: "confirm",
         message: "Are you a manager?",
@@ -58,6 +57,7 @@ const adminQuestions = [
         ]
     }
 ];
+
 // remaining employee summary questions
 const questions = [
     {
@@ -98,7 +98,7 @@ const managerQuestion = [
 const engineerQuestion = [
     {
         type: "input",
-        message: "What is the employee's GitHUb username?",
+        message: "What is the engineer's GitHUb username?",
         name: "gitname"
     }
 
@@ -107,12 +107,12 @@ const engineerQuestion = [
 const internQuestion = [
     {
         type: "input",
-        message: "What school did the employee go to?",
+        message: "What school did the intern attend?",
         name: "school"
     }
 
 ];
-console.log (startQuestion, adminQuestions, managerQuestion, engineerQuestion, internQuestion, internQuestion);
+// console.log (startQuestion);
 
 
 
@@ -126,7 +126,8 @@ let employeeInfo = [];
 //start the thing function
 let start =
     async function adminStart() {
-
+        await Inquirer
+            .prompt(startQuestion)
         await Inquirer
             .prompt(adminQuestions)
 
@@ -179,14 +180,14 @@ let start =
     let next =
     async function adminNext() {
         await Inquirer
-            .prompt(adminChoices)
+            .prompt(startQuestion)
             .then(async function (answers) {
                 //
-                if (answers.adminchoice === 'Add an employee to the team?') {
+                if (answers.startQuestion === 'Add an employee to the team?') {
                     employeeInfo.length = 0;
                     input()
                 }
-                if (answers.adminchoice === 'Create the team HTML page?') {
+                if (answers.startQuestion === 'Create the team HTML page?') {
                     createteam()
                 }
             })
@@ -207,13 +208,113 @@ let start =
 //handle if manager, no promiste rejection
 
 
+let classdir =
+    async function bytitle() {
+
+        if (employeeInfo[0].title === "manager") {
+            buildManager()
+        }
+        if (employeeInfo[0].title === "engineer") {
+            buildEngineer()
+        }
+        if (employeeInfo[0].title === "intern") {
+            buildIntern()
+        }
+    };
+
 start ()
 
     // build a manager card at start
-    //next
+    async function buildManager() {
+
+        await Inquirer
+            .prompt(managerQuestion)
+    
+            .then(async function (userData) {
+                let managerAns = {
+                    'officeNumber': JSON.parse(userData.officeNumber)
+                }
+                employeeInfo[0].officeNumber = managerAns.officeNumber;
+    
+                const name = employeeInfo[0].name;
+                const id = employeeInfo[0].id;
+                const email = employeeInfo[0].email;
+                const role = employeeInfo[0].role;
+                const officeNumber = employeeInfo[0].officeNumber;
+            
+                const manager = new Manager(name, id, email, officeNumber)
+                managerArr.push(manager);
+    
+            })
+             //next
+            next()
+        };
+    
+   
     // build an engineer card when filled out
+    async function buildEngineer() {
+        await Inquirer
+            .prompt(engineerQuestion)
+    
+            .then(async function (userData) {
+                let engineerInfo = {
+                    'gitname': userData.gitname
+                }
+                employeeInfo[0].gitname = engineerInfo.gitname;
+            })
+            .then(async function() {
+    
+                const gitname = employeeInfo[0].gitname;
+                let queryURL = 'https://api.github.com/users/' + gitname;
+                axios
+                    .get(queryURL).then(async function (response) {
+                        const engineerInfo = {
+                            "github": response.data.login,
+                        }
+            
+                        employeeInfo[0].github = engineerInfo.github;
+                        
+                    })
+            })
+                            setTimeout(function(){
+                            const name = employeeInfo[0].name;
+                            const id = employeeInfo[0].id;
+                            const email = employeeInfo[0].email;
+                            const role = employeeInfo[0].role;
+                            const gitname = employeeInfo[0].gitname;
+                            const github = employeeInfo[0].github;
+                        
+                            const engineer = new Engineer(name, id, email, gitname, github)
+                 
+                            engineerArr.push(engineer)
+                            }, 2000);
+                        
+    next()
+    };
     //next
+
     // build an intern card when filled out
+    async function buildIntern() {
+        await Inquirer
+            .prompt(internQuestion)
+    
+            .then(async function (userData) {
+                let internInfo = {
+                    'school': userData.school
+                }
+                employeeInfo[0].school = internInfo.school;
+            })
+            const name = employeeInfo[0].name;
+            const id = employeeInfo[0].id;
+            const email = employeeInfo[0].email;
+            const role = employeeInfo[0].role;
+            const school = employeeInfo[0].school;
+    
+        const intern = new Intern(name, id, email, school);
+        internArr.push(intern)
+        next()
+    };
+
     //next
 
 
